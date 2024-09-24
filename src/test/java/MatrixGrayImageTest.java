@@ -21,12 +21,10 @@ class MatrixGrayImageTest {
 
     @Test
     void testGetPixel_whenPixelHasBeenSet() {
-        GrayColor grey1 = new ByteGrayColor(0.2);
-        GrayColor grey2 = new ByteGrayColor(0.8);
         MatrixGrayImage image = new MatrixGrayImage(10, 10);
-        image.setPixel(grey1, 1, 1);
-        assertThat(image.getPixelGrayColor(1,1)).isEqualTo(grey1);
-        image.setPixel(grey2, 3, 9);
-        assertThat(image.getPixelGrayColor(3,9)).isEqualTo(grey2);
+        image.setPixelLuminosity(0.2, 1, 1);
+        assertThat(image.getPixelLuminosity(1,1)).isEqualTo(0.2);
+        image.setPixelLuminosity(0.8, 3, 9);
+        assertThat(image.getPixelLuminosity(3,9)).isEqualTo(0.9);
     }
 }

@@ -10,20 +10,20 @@ import java.util.Scanner;
  */
 public class MatrixGrayImage implements GrayImage {
 
-    private final GrayColor[][] pixels;
+    private final byte[][] pixels;
     private final int width;
     private final int height;
 
 
     @Override
-    public void setPixel(GrayColor gray, int x, int y) {
+    public void setPixelLuminosity(double luminosity, int x, int y) {
         // TODO : Compléter la méthode pour modifier le pixel.
     }
 
     @Override
-    public GrayColor getPixelGrayColor(int x, int y) {
+    public double getPixelLuminosity(int x, int y) {
         // TODO : Changer les instructions pour retourner le bon pixel.
-        return new ByteGrayColor();
+        return 0;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class MatrixGrayImage implements GrayImage {
 
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++) {
-                GrayColor color = new ByteGrayColor(scan.nextInt());
-                result.setPixel(color, x, y);
+                double luminosity = ByteGrayColor.toLuminosity(scan.nextByte());
+                result.setPixelLuminosity(luminosity, x, y);
             }
         }
 
@@ -84,14 +84,14 @@ public class MatrixGrayImage implements GrayImage {
             FileWriter fileWriter = new FileWriter(fileName);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println("P2");
-            printWriter.println("# CREATOR: TP3 Version 1.0");
+            printWriter.println("# CREATOR: TP3 Version 2.0");
             printWriter.printf("%d %d\n",this.width, this.height);
 
             printWriter.println(pgmCodeOfGrayColor(pixels[0][0]));
 
             for(int y = 0; y < height; y++){
                 for(int x = 0; x < width; x++) {
-                    printWriter.println(pgmCodeOfGrayColor(getPixelGrayColor(x,y)));
+                    printWriter.println(pgmCodeOfGrayColor(getPixelLuminosity(x,y)));
                 }
             }
             printWriter.close();
@@ -103,7 +103,7 @@ public class MatrixGrayImage implements GrayImage {
 
     private static final int PGM_MAXIMUM_CODE = 255;
 
-    private int pgmCodeOfGrayColor(GrayColor pixelGrayColor) {
-        return (int) (pixelGrayColor.getLuminosity() * (double) PGM_MAXIMUM_CODE);
+    private int pgmCodeOfGrayColor(double luminosity) {
+        return (int) (luminosity * (double) PGM_MAXIMUM_CODE);
     }
 }

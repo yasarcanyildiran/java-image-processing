@@ -4,54 +4,33 @@ import javafx.scene.paint.Color;
  * Created by Arnaud Labourel on 02/10/2018.
  */
 
-public class ByteGrayColor implements GrayColor {
+public class ByteGrayColor {
 
-    private static final int MINIMUM_GRAY_LEVEL = 0;
-    private static final int MAXIMUM_GRAY_LEVEL = 255;
-    private static final int OPACITY = 1;
-
-    private final int grayLevel;
+  private static final byte WHITE =  Byte.MAX_VALUE;
+  private static final byte BLACK =  Byte.MIN_VALUE;
 
 
-    public ByteGrayColor(){
-       this.grayLevel = MINIMUM_GRAY_LEVEL;
-    }
+  public static byte ofLuminosity(double luminosity) {
+    int range = BLACK - WHITE;
+    int level = ((int) Math.round(luminosity * range + 0.49999)) + WHITE;
+    return (byte) (Math.max(BLACK,Math.min(WHITE,level)));
+  }
 
-    public ByteGrayColor(int grayLevel) {
-        // TODO : Corriger l'initialisation de la propriété grayLevel de l'instance.
-        this.grayLevel = 0;
-    }
-
-    public ByteGrayColor(double luminosity) {
-        // TODO : Corriger l'initialisation de la propriété grayLevel de l'instance.
-        this.grayLevel = 0;
-    }
-
-    @Override
-    public double getLuminosity() {
-        // TODO : Retourner la luminosité de la couleur (entre 0 noir et 1 blanc)
-        return 0;
-    }
-
-    @Override
-    public Color getColor(){
-        double component = getLuminosity();
-        return new Color(component, component, component, OPACITY);
-    }
+  public static double toLuminosity(byte grayLevel) {
+    return ((int) grayLevel - WHITE) / 255.0;
+  }
 
 
-    @Override
-    public int compareTo(GrayColor o) {
-        // TODO : Retourner la différence de niveau de gris.
-        return 0;
-    }
+  private static final double OPACITY = 1;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (this.getClass() != o.getClass()) return false;
-        ByteGrayColor color = (ByteGrayColor) o;
-        return grayLevel == color.grayLevel;
-    }
+  public static Color toColor(byte grayLevel) {
+    double component = toLuminosity(grayLevel);
+    return new Color(component, component, component, OPACITY);
+  }
+
+
+  public static int compare(byte color1, byte color2) {
+    return Byte.compare(color1, color2);
+  }
 
 }
