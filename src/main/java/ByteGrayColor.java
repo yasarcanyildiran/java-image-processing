@@ -6,18 +6,18 @@ import javafx.scene.paint.Color;
 
 public class ByteGrayColor {
 
-  private static final byte WHITE =  Byte.MAX_VALUE;
-  private static final byte BLACK =  Byte.MIN_VALUE;
+  public static final byte WHITE =  Byte.MAX_VALUE;
+  public static final byte BLACK =  Byte.MIN_VALUE;
 
 
   public static byte ofLuminosity(double luminosity) {
-    int range = BLACK - WHITE;
-    int level = ((int) Math.round(luminosity * range + 0.49999)) + WHITE;
+    int range = WHITE - BLACK;
+    int level = ((int) Math.round(luminosity * range + 0.49999)) + BLACK;
     return (byte) (Math.max(BLACK,Math.min(WHITE,level)));
   }
 
   public static double toLuminosity(byte grayLevel) {
-    return ((int) grayLevel - WHITE) / 255.0;
+    return ((int) grayLevel - BLACK) / 255.0;
   }
 
 

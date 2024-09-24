@@ -23,7 +23,7 @@ public class MatrixGrayImage implements GrayImage {
     @Override
     public double getPixelLuminosity(int x, int y) {
         // TODO : Changer les instructions pour retourner le bon pixel.
-        return 0;
+        return 0.0;
     }
 
     @Override
@@ -54,6 +54,12 @@ public class MatrixGrayImage implements GrayImage {
     }
 
 
+
+    /*
+    Les méthodes suivantes assurent la lecture et l'écriture des fichiers images. Elles sont
+    correctes, vous ne devriez pas les modifier.
+     */
+
     public static MatrixGrayImage createImageFromPGMFile(String fileName) {
         // NE PAS MODIFIER !
         InputStream file = ClassLoader.getSystemResourceAsStream(fileName);
@@ -70,7 +76,8 @@ public class MatrixGrayImage implements GrayImage {
 
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++) {
-                double luminosity = ByteGrayColor.toLuminosity(scan.nextByte());
+                double luminosity =
+                  ByteGrayColor.toLuminosity((byte) (scan.nextInt() + ByteGrayColor.BLACK));
                 result.setPixelLuminosity(luminosity, x, y);
             }
         }

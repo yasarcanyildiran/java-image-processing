@@ -25,6 +25,6 @@ class MatrixGrayImageTest {
         image.setPixelLuminosity(0.2, 1, 1);
         assertThat(image.getPixelLuminosity(1,1)).isEqualTo(0.2);
         image.setPixelLuminosity(0.8, 3, 9);
-        assertThat(image.getPixelLuminosity(3,9)).isEqualTo(0.9);
+        assertThat(image.getPixelLuminosity(3,9)).isEqualTo(0.8);
     }
 }
