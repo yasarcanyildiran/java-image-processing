@@ -1,10 +1,20 @@
 plugins {
     id 'application'
-    id "org.openjfx.javafxplugin" version "0.1.0"
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'jvm-test-suite'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+group = 'L2_INFO_AMU'
+version = '0.1-SNAPSHOT'
+
 javafx {
-    version = "24"
+    version = "25"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
@@ -13,18 +23,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.3',
-            'org.assertj:assertj-core:3.26.3')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.3')
+
 }
 
-test {
-    useJUnitPlatform()
+
+application {
+    mainClass = 'viewer.Main' 
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+            
+            dependencies {
+                implementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+                implementation 'org.assertj:assertj-core:3.25.3'
+                runtimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+            }
+        }
     }
 }
 
@@ -36,5 +53,5 @@ tasks.named('run').configure {
 }
 
 application {
-    mainClass = "Main"
+    mainClass = "fr.univamu.images.Main"
 }
