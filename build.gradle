@@ -28,7 +28,7 @@ dependencies {
 
 
 application {
-    mainClass = 'viewer.Main' 
+    mainClass = 'Main' 
 }
 
 testing {
@@ -52,6 +52,3 @@ tasks.named('run').configure {
     ]
 }
 
-application {
-    mainClass = "fr.univamu.images.Main"
-}
