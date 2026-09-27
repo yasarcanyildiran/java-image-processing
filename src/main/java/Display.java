@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -21,7 +22,11 @@ public void initialize(URL location, ResourceBundle resources) {
 
 this.image = MatrixGrayImage.createImageFromPGMFile("images/luminy.pgm");
 
-Transform transform = new Pixelate(10);
+Transform transform = new CompositeTransform(List.of(
+    new DecreaseGrayLevels(8),
+    new Outline(0.05),
+    new Invert()
+));
 transform.applyTo(image);
 
 render();
