@@ -21,7 +21,7 @@ public void initialize(URL location, ResourceBundle resources) {
 
 this.image = MatrixGrayImage.createImageFromPGMFile("images/luminy.pgm");
 
-Transform transform = new DecreaseGrayLevels(4);
+Transform transform = new Outline(0.025);
 transform.applyTo(image);
 
 render();
