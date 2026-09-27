@@ -6,111 +6,106 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * Created by Arnaud Labourel on 02/10/2018.
- */
+* Created by Arnaud Labourel on 02/10/2018.
+*/
 public class MatrixGrayImage implements GrayImage {
 
-    private final byte[][] pixels;
-    private final int width;
-    private final int height;
+private final byte[][] pixels;
+private final int width;
+private final int height;
 
+@Override
+public void setPixelLuminosity(double luminosity, int x, int y) {
+pixels[x][y] = ByteGrayColor.ofLuminosity(luminosity);
+}
 
-    @Override
-    public void setPixelLuminosity(double luminosity, int x, int y) {
-        // TODO : Compléter la méthode pour modifier le pixel.
-    }
+@Override
+public double getPixelLuminosity(int x, int y) {
+return ByteGrayColor.toLuminosity(pixels[x][y]);
+}
 
-    @Override
-    public double getPixelLuminosity(int x, int y) {
-        // TODO : Changer les instructions pour retourner le bon pixel.
-        return 0.0;
-    }
+@Override
+public Color getPixelColor(int x, int y) {
+return ByteGrayColor.toColor(pixels[x][y]);
+}
 
-    @Override
-    public Color getPixelColor(int x, int y) {
-        // TODO : Changer les instructions pour retourner la couleur du pixel.
-        return Color.WHITE;
-    }
+@Override
+public int getWidth() {
+return width;
+}
 
-    @Override
-    public int getWidth() {
-        // TODO : Changer les instructions pour retourner la largeur de l'image.
-        return 600;
-    }
+@Override
+public int getHeight() {
+return height;
+}
 
-    @Override
-    public int getHeight() {
-        // TODO : Changer les instructions pour retourner la hauteur de l'image.
-        return 400;
-    }
+public MatrixGrayImage(int width, int height){
+this.width = width;
+this.height = height;
+this.pixels = new byte[width][height];
+for (int x = 0; x < width; x++) {
+for (int y = 0; y < height; y++) {
+pixels[x][y] = ByteGrayColor.WHITE;
+}
+}
+}
 
-    public MatrixGrayImage(int width, int height){
-        /* TODO : Modifier les instructions pour initialiser correctement
-            les propriétés de l'instance.
-         */
-        this.width = 0;
-        this.height = 0;
-        this.pixels = null;
-    }
+/*
+Les méthodes suivantes assurent la lecture et l'écriture des fichiers images. Elles sont
+correctes, vous ne devriez pas les modifier.
+*/
 
+public static MatrixGrayImage createImageFromPGMFile(String fileName) {
+// NE PAS MODIFIER !
+InputStream file = ClassLoader.getSystemResourceAsStream(fileName);
+Scanner scan = new Scanner(file);
+scan.nextLine();
+scan.nextLine();
 
+int width = scan.nextInt();
+int height = scan.nextInt();
 
-    /*
-    Les méthodes suivantes assurent la lecture et l'écriture des fichiers images. Elles sont
-    correctes, vous ne devriez pas les modifier.
-     */
+MatrixGrayImage result = new MatrixGrayImage(width, height);
 
-    public static MatrixGrayImage createImageFromPGMFile(String fileName) {
-        // NE PAS MODIFIER !
-        InputStream file = ClassLoader.getSystemResourceAsStream(fileName);
-        Scanner scan = new Scanner(file);
-        scan.nextLine();
-        scan.nextLine();
+scan.nextInt();
 
-        int width = scan.nextInt();
-        int height = scan.nextInt();
+for(int y = 0; y < height; y++){
+for(int x = 0; x < width; x++) {
+double luminosity =
+ByteGrayColor.toLuminosity((byte) (scan.nextInt() + ByteGrayColor.BLACK));
+result.setPixelLuminosity(luminosity, x, y);
+}
+}
 
-        MatrixGrayImage result = new MatrixGrayImage(width, height);
+return result;
+}
 
-        scan.nextInt();
+public void writeIntoPGMFormat(String fileName){
+// NE PAS MODIFIER !
+try {
+FileWriter fileWriter = new FileWriter(fileName);
+PrintWriter printWriter = new PrintWriter(fileWriter);
+printWriter.println("P2");
+printWriter.println("# CREATOR: TP3 Version 2.0");
+printWriter.printf("%d %d\n",this.width, this.height);
 
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++) {
-                double luminosity =
-                  ByteGrayColor.toLuminosity((byte) (scan.nextInt() + ByteGrayColor.BLACK));
-                result.setPixelLuminosity(luminosity, x, y);
-            }
-        }
+printWriter.println(pgmCodeOfGrayColor(pixels[0][0]));
 
-        return result;
-    }
+for(int y = 0; y < height; y++){
+for(int x = 0; x < width; x++) {
+printWriter.println(pgmCodeOfGrayColor(getPixelLuminosity(x,y)));
+}
+}
+printWriter.close();
+}
+catch (Exception e){
+e.printStackTrace();
+}
+}
 
-    public void writeIntoPGMFormat(String fileName){
-        // NE PAS MODIFIER !
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println("P2");
-            printWriter.println("# CREATOR: TP3 Version 2.0");
-            printWriter.printf("%d %d\n",this.width, this.height);
+private static final int PGM_MAXIMUM_CODE = 255;
 
-            printWriter.println(pgmCodeOfGrayColor(pixels[0][0]));
-
-            for(int y = 0; y < height; y++){
-                for(int x = 0; x < width; x++) {
-                    printWriter.println(pgmCodeOfGrayColor(getPixelLuminosity(x,y)));
-                }
-            }
-            printWriter.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private static final int PGM_MAXIMUM_CODE = 255;
-
-    private int pgmCodeOfGrayColor(double luminosity) {
-        return (int) (luminosity * (double) PGM_MAXIMUM_CODE);
-    }
+private int pgmCodeOfGrayColor(double luminosity) {
+return (int) (luminosity * (double) PGM_MAXIMUM_CODE);
+}
 }

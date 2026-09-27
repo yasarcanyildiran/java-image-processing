@@ -6,4 +6,4 @@ Ce projet est l'occasion de travailler sur la représentation et la manipulation
 
 ## Membre du projet
 
-- NOM, prénom
+- YILDIRAN, Yasar Can
