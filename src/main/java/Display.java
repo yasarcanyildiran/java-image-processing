@@ -8,44 +8,45 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by Arnaud Labourel on 04/10/2018.
- */
+* Created by Arnaud Labourel on 04/10/2018.
+*/
 public class Display implements Initializable {
-    @FXML
-    private Canvas canvas;
+@FXML
+private Canvas canvas;
 
-    MatrixGrayImage image;
+MatrixGrayImage image;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+@Override
+public void initialize(URL location, ResourceBundle resources) {
 
-        this.image = MatrixGrayImage.createImageFromPGMFile("images/luminy.pgm");
+this.image = MatrixGrayImage.createImageFromPGMFile("images/luminy.pgm");
 
-        // TODO : Ajouter les transformations d'image.
+Transform transform = new Invert();
+transform.applyTo(image);
 
-        render();
-    }
+render();
+}
 
-    public void render() {
-        int pixelWidth = image.getWidth();
-        int pixelHeight = image.getHeight();
+public void render() {
+int pixelWidth = image.getWidth();
+int pixelHeight = image.getHeight();
 
-        canvas.setWidth(pixelWidth);
-        canvas.setHeight(pixelHeight);
+canvas.setWidth(pixelWidth);
+canvas.setHeight(pixelHeight);
 
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
-        PixelWriter pixelWriter = graphicsContext.getPixelWriter();
+PixelWriter pixelWriter = graphicsContext.getPixelWriter();
 
-        for (int i = 0; i < pixelWidth; i++) {
-            for (int j = 0; j < pixelHeight; j++) {
-                renderPixel(i,j, pixelWriter);
-            }
-        }
-    }
+for (int i = 0; i < pixelWidth; i++) {
+for (int j = 0; j < pixelHeight; j++) {
+renderPixel(i,j, pixelWriter);
+}
+}
+}
 
-    private void renderPixel(int x, int y, PixelWriter pixelWriter) {
-        pixelWriter.setColor(x, y, image.getPixelColor(x, y));
-    }
+private void renderPixel(int x, int y, PixelWriter pixelWriter) {
+pixelWriter.setColor(x, y, image.getPixelColor(x, y));
+}
 
 }
